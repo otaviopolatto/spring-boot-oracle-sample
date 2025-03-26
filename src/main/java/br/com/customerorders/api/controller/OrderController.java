@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.customerorders.api.domain.dto.CountOrderByStoreDto;
 import br.com.customerorders.api.domain.projections.OrderProjection;
 import br.com.customerorders.api.repository.OrderRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +37,20 @@ public class OrderController {
 
 		return ResponseEntity.ok(ordersList);
 
+	}
+	
+	@GetMapping("/orders-by-store")
+	@Operation(summary = "Busca da quantidade de pedidos por loja", description = "Retorna a lista da quantidade de pedidos por loja")
+	public ResponseEntity<List<CountOrderByStoreDto>> buscarTotalPedidosPorLoja() {
+		
+		List<CountOrderByStoreDto> listaPedidosPorLoja =  orderRepository.findTotalOrdersByStore();
+		
+		if (listaPedidosPorLoja.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		
+		return ResponseEntity.ok(listaPedidosPorLoja);
+		
 	}
 
 }
